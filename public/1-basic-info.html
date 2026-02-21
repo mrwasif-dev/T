@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Information</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: 0.3s;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        .required::after {
+            content: " *";
+            color: red;
+        }
+        .info-text {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>📍 Basic Information</h2>
+    
+    <div class="form-grid">
+        <div class="form-group">
+            <label class="required">Tower ID</label>
+            <input type="text" id="towerId" placeholder="e.g., TWR-001" onchange="updateData()">
+            <div class="info-text">Unique identifier for the tower</div>
+        </div>
+
+        <div class="form-group">
+            <label>Complete Address</label>
+            <input type="text" id="address" placeholder="Street, City, Area" onchange="updateData()">
+        </div>
+
+        <div class="form-group">
+            <label>Latitude</label>
+            <input type="text" id="latitude" placeholder="e.g., 24.8607" onchange="updateData()">
+        </div>
+
+        <div class="form-group">
+            <label>Longitude</label>
+            <input type="text" id="longitude" placeholder="e.g., 67.0011" onchange="updateData()">
+        </div>
+
+        <div class="form-group">
+            <label>Operator</label>
+            <input type="text" id="operator" value="Telenor" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Technology Generation</label>
+            <select id="technology" onchange="updateData()">
+                <option value="">-- Select Generation --</option>
+                <option value="2G">2G Only</option>
+                <option value="3G">3G (Includes 2G)</option>
+                <option value="4G">4G (Includes 2G, 3G)</option>
+                <option value="5G">5G (Includes 2G, 3G, 4G)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Installation Date</label>
+            <input type="date" id="installationDate" onchange="updateData()">
+        </div>
+
+        <div class="form-group">
+            <label>Status</label>
+            <select id="status" onchange="updateData()">
+                <option value="">-- Select --</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+                <option value="Under Maintenance">Under Maintenance</option>
+            </select>
+        </div>
+    </div>
+
+    <script>
+        let sectionData = {};
+
+        function updateData() {
+            sectionData = {
+                towerId: document.getElementById('towerId').value,
+                address: document.getElementById('address').value,
+                latitude: document.getElementById('latitude').value,
+                longitude: document.getElementById('longitude').value,
+                operator: 'Telenor',
+                technology: document.getElementById('technology').value,
+                installationDate: document.getElementById('installationDate').value,
+                status: document.getElementById('status').value
+            };
+        }
+
+        // Function to get data for parent
+        function getSectionData() {
+            updateData();
+            return sectionData;
+        }
+
+        // Load saved data if exists
+        window.addEventListener('load', () => {
+            // Check if we're in edit mode
+            const urlParams = new URLSearchParams(window.location.search);
+            const towerId = urlParams.get('id');
+            
+            if(towerId) {
+                // Fetch tower data and populate
+                fetch(`/api/towers/${towerId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        document.getElementById('towerId').value = data.towerId || '';
+                        document.getElementById('address').value = data.address || '';
+                        document.getElementById('latitude').value = data.latitude || '';
+                        document.getElementById('longitude').value = data.longitude || '';
+                        document.getElementById('technology').value = data.technology || '';
+                        document.getElementById('installationDate').value = data.installationDate || '';
+                        document.getElementById('status').value = data.status || '';
+                        updateData();
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
