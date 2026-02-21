@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Management System</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+        
+        .welcome-section {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .welcome-section h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .welcome-section p {
+            font-size: 1.2em;
+            color: #34495e;
+        }
+        
+        .search-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .search-section h2 {
+            margin-bottom: 20px;
+            color: #495057;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            min-width: 250px;
+        }
+        
+        .search-box button {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        
+        .search-box button:hover {
+            background: #45a049;
+        }
+        
+        .data-section {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .section-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .section-card h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #4CAF50;
+            font-size: 1.4em;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        .radio-group, .checkbox-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 10px 0;
+        }
+        
+        .radio-group label, .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: normal;
+        }
+        
+        .radio-group input, .checkbox-group input {
+            width: auto;
+        }
+        
+        .neighbors-container {
+            margin-top: 15px;
+        }
+        
+        .neighbor-entry {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        
+        .btn-add {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        .btn-add:hover {
+            background: #0056b3;
+        }
+        
+        .btn-remove {
+            background: #dc3545;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+        
+        .btn-remove:hover {
+            background: #c82333;
+        }
+        
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+        }
+        
+        .btn-submit {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 18px 60px;
+            font-size: 1.3em;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(40,167,69,0.3);
+        }
+        
+        .btn-submit:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(40,167,69,0.4);
+        }
+        
+        .message-box {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .status-saved {
+            background: #28a745;
+            color: white;
+        }
+        
+        .status-pending {
+            background: #ffc107;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1>🏗️ Tower Management System</h1>
+            <p>Welcome! Please enter Tower ID to view or update information</p>
+        </div>
+        
+        <!-- Search Section -->
+        <div class="search-section">
+            <h2>🔍 Search Tower</h2>
+            <div class="search-box">
+                <input type="text" id="towerId" placeholder="Enter Tower ID (e.g., TWR-001)" value="TWR-001">
+                <button onclick="loadTowerData()">Load Tower Data</button>
+            </div>
+            <div id="searchMessage" class="message-box"></div>
+        </div>
+        
+        <!-- Data Entry Section (Initially Hidden) -->
+        <div id="dataSection" class="data-section">
+            <form id="towerForm">
+                <!-- Hidden field for Tower ID -->
+                <input type="hidden" id="formTowerId" name="towerId">
+                
+                <!-- 1. Basic Information -->
+                <div class="section-card">
+                    <h3>1. Basic Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Tower ID *</label>
+                            <input type="text" id="basicTowerId" name="towerId" readonly required>
+                        </div>
+                        <div class="form-group">
+                            <label>Complete Address *</label>
+                            <input type="text" id="address" name="address" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Latitude</label>
+                            <input type="text" id="latitude" name="latitude" placeholder="e.g., 24.8607">
+                        </div>
+                        <div class="form-group">
+                            <label>Longitude</label>
+                            <input type="text" id="longitude" name="longitude" placeholder="e.g., 67.0011">
+                        </div>
+                        <div class="form-group">
+                            <label>Operator</label>
+                            <input type="text" id="operator" name="operator" value="Telenor" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Technology Generation</label>
+                            <select id="technology" name="technology">
+                                <option value="">Select Generation</option>
+                                <option value="2G">2G Only</option>
+                                <option value="3G">3G (Includes 2G)</option>
+                                <option value="4G">4G (Includes 2G, 3G)</option>
+                                <option value="5G">5G (Includes 2G, 3G, 4G)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2. Ownership -->
+                <div class="section-card">
+                    <h3>2. Ownership & Sharing</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Ownership Type</label>
+                            <select id="ownershipType" name="ownershipType" onchange="toggleSharingFields()">
+                                <option value="">Select Type</option>
+                                <option value="Own">Own (TP Own)</option>
+                                <option value="Shared">Shared (TP Shear With)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="sharingPartnerGroup" style="display: none;">
+                            <label>Sharing Partner Company</label>
+                            <input type="text" id="sharingPartner" name="sharingPartner" placeholder="e.g., Jazz, Zong, etc.">
+                        </div>
+                        <div class="form-group" id="sharingTypeGroup" style="display: none;">
+                            <label>Sharing Type</label>
+                            <select id="sharingType" name="sharingType">
+                                <option value="">Select Type</option>
+                                <option value="DC">DC Share</option>
+                                <option value="AC">AC Share</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 3. Electrical Infrastructure -->
+                <div class="section-card">
+                    <h3>3. Electrical Infrastructure</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Grid Availability</label>
+                            <select id="gridAvailability" name="gridAvailability">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Pole Type</label>
+                            <select id="poleType" name="poleType">
+                                <option value="">Select</option>
+                                <option value="Concrete">Concrete</option>
+                                <option value="Steel">Steel</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Transformer Capacity (kW)</label>
+                            <input type="number" id="transformerCapacity" name="transformerCapacity" placeholder="e.g., 100">
+                        </div>
+                        <div class="form-group">
+                            <label>Transformer Ownership</label>
+                            <select id="transformerOwnership" name="transformerOwnership">
+                                <option value="">Select</option>
+                                <option value="Own">Own</option>
+                                <option value="Public">Public</option>
+                                <option value="Shared">Shared</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>3-Phase DC Link</label>
+                            <select id="dcLink" name="dcLink">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Energy Meter Present</label>
+                            <select id="meterPresent" name="meterPresent" onchange="toggleMeterFields()">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="meterStatusGroup" style="display: none;">
+                            <label>Meter Status</label>
+                            <select id="meterStatus" name="meterStatus">
+                                <option value="">Select</option>
+                                <option value="Working">Working</option>
+                                <option value="Faulty">Faulty</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="meterReferenceGroup" style="display: none;">
+                            <label>Meter Reference Number</label>
+                            <input type="text" id="meterReference" name="meterReference">
+                        </div>
+                        <div class="form-group">
+                            <label>Number of Earth Rods</label>
+                            <input type="number" id="earthRods" name="earthRods" min="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 4. Generator -->
+                <div class="section-card">
+                    <h3>4. Generator</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Generator Present</label>
+                            <select id="generatorPresent" name="generatorPresent" onchange="toggleGeneratorFields()">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="generator-fields" style="display: none;">
+                            <div class="form-group">
+                                <label>Condition</label>
+                                <select id="generatorCondition" name="generatorCondition">
+                                    <option value="">Select</option>
+                                    <option value="Operational">Operational</option>
+                                    <option value="Faulty">Faulty</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Brand</label>
+                                <input type="text" id="generatorBrand" name="generatorBrand">
+                            </div>
+                            <div class="form-group">
+                                <label>Power (kW)</label>
+                                <input type="number" id="generatorPower" name="generatorPower">
+                            </div>
+                            <div class="form-group">
+                                <label>Oil Capacity (Liters)</label>
+                                <input type="number" id="oilCapacity" name="oilCapacity">
+                            </div>
+                            <div class="form-group">
+                                <label>Last Oil Change Date</label>
+                                <input type="date" id="lastOilChange" name="lastOilChange">
+                            </div>
+                            <div class="form-group">
+                                <label>Battery</label>
+                                <select id="generatorBattery" name="generatorBattery">
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Static Charger</label>
+                                <select id="staticCharger" name="staticCharger">
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Solo Night Feature</label>
+                                <select id="soloNight" name="soloNight">
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Oil Safety</label>
+                                <select id="oilSafety" name="oilSafety">
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Fuel Safety</label>
+                                <select id="fuelSafety" name="fuelSafety">
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Engine Number</label>
+                                <input type="text" id="engineNumber" name="engineNumber">
+                            </div>
+                            <div class="form-group">
+                                <label>Serial Number</label>
+                                <input type="text" id="generatorSerial" name="generatorSerial">
+                            </div>
+                            <div class="form-group">
+                                <label>Noise Level</label>
+                                <select id="noiseLevel" name="noiseLevel">
+                                    <option value="">Select</option>
+                                    <option value="Normal">Normal</option>
+                                    <option value="Loud">Loud</option>
+                                    <option value="Abnormal">Abnormal</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 5. Rectifier -->
+                <div class="section-card">
+                    <h3>5. Rectifier</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Number of Modules</label>
+                            <input type="number" id="rectifierModules" name="rectifierModules" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Module Power (W)</label>
+                            <input type="number" id="modulePower" name="modulePower" value="3000" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>AC SPD Present</label>
+                            <select id="acSpdPresent" name="acSpdPresent" onchange="toggleAcSpdBrand()">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="acSpdBrandGroup" style="display: none;">
+                            <label>AC SPD Brand</label>
+                            <input type="text" id="acSpdBrand" name="acSpdBrand">
+                        </div>
+                        <div class="form-group">
+                            <label>DC SPD Present</label>
+                            <select id="dcSpdPresent" name="dcSpdPresent" onchange="toggleDcSpdBrand()">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="dcSpdBrandGroup" style="display: none;">
+                            <label>DC SPD Brand</label>
+                            <input type="text" id="dcSpdBrand" name="dcSpdBrand">
+                        </div>
+                        <div class="form-group">
+                            <label>Cooling Fan</label>
+                            <select id="coolingFan" name="coolingFan">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 6. Battery Bank -->
+                <div class="section-card">
+                    <h3>6. Battery Bank</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Configuration</label>
+                            <select id="batteryConfig" name="batteryConfig">
+                                <option value="">Select</option>
+                                <option value="Bank">Battery Bank</option>
+                                <option value="DC Share">DC Share</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Number of Banks</label>
+                            <input type="number" id="numberOfBanks" name="numberOfBanks" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Bank Capacity (Ah)</label>
+                            <input type="number" id="bankCapacity" name="bankCapacity" value="400">
+                        </div>
+                        <div class="form-group">
+                            <label>LLVD Value (V)</label>
+                            <input type="number" id="llvdValue" name="llvdValue" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>BLVD Value (V)</label>
+                            <input type="number" id="blvdValue" name="blvdValue" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>Battery Voltage (V)</label>
+                            <input type="number" id="batteryVoltage" name="batteryVoltage">
+                        </div>
+                        <div class="form-group">
+                            <label>Backup Time (Hours)</label>
+                            <input type="number" id="backupTime" name="backupTime" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label>Site Load (Approx)</label>
+                            <input type="text" id="siteLoad" name="siteLoad" placeholder="e.g., 50A">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 7. Diesel Tank -->
+                <div class="section-card">
+                    <h3>7. Diesel Tank</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Tank Present</label>
+                            <select id="tankPresent" name="tankPresent" onchange="toggleTankFields()">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="tank-fields" style="display: none;">
+                            <div class="form-group">
+                                <label>Tank Type</label>
+                                <select id="tankType" name="tankType">
+                                    <option value="">Select</option>
+                                    <option value="Internal">Internal</option>
+                                    <option value="External">External</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Capacity (Liters)</label>
+                                <input type="number" id="tankCapacity" name="tankCapacity">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 8. Solar System -->
+                <div class="section-card">
+                    <h3>8. Solar System</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Solar Present</label>
+                            <select id="solarPresent" name="solarPresent" onchange="toggleSolarFields()">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="solar-fields" style="display: none;">
+                            <div class="form-group">
+                                <label>Total Capacity (kW)</label>
+                                <input type="number" id="solarCapacity" name="solarCapacity" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label>Total Panels</label>
+                                <input type="number" id="totalPanels" name="totalPanels">
+                            </div>
+                            <div class="form-group">
+                                <label>Operational Panels</label>
+                                <input type="number" id="operationalPanels" name="operationalPanels">
+                            </div>
+                            <div class="form-group">
+                                <label>Faulty Panels</label>
+                                <input type="number" id="faultyPanels" name="faultyPanels">
+                            </div>
+                            <div class="form-group">
+                                <label>Junction Boxes</label>
+                                <input type="number" id="junctionBoxes" name="junctionBoxes">
+                            </div>
+                            <div class="form-group">
+                                <label>Solar PU Modules in Rectifier</label>
+                                <input type="number" id="solarPuModules" name="solarPuModules">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 9. Site Classification -->
+                <div class="section-card">
+                    <h3>9. Site Classification</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Site Type</label>
+                            <select id="siteType" name="siteType" onchange="toggleSiteTypeFields()">
+                                <option value="">Select</option>
+                                <option value="Single">Single Site</option>
+                                <option value="PTN">PTN Site</option>
+                                <option value="Hub">Hub Site</option>
+                                <option value="Mega Hub">Mega Hub</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="parentSiteGroup" style="display: none;">
+                            <label>Parent Site(s)</label>
+                            <input type="text" id="parentSites" name="parentSites" placeholder="Comma separated Tower IDs">
+                        </div>
+                        <div class="form-group" id="childSitesGroup" style="display: none;">
+                            <label>Child Site(s)</label>
+                            <input type="text" id="childSites" name="childSites" placeholder="Comma separated Tower IDs">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 10. BTS Equipment -->
+                <div class="section-card">
+                    <h3>10. BTS Equipment</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>BTS Vendor</label>
+                            <select id="btsVendor" name="btsVendor">
+                                <option value="">Select</option>
+                                <option value="Huawei">Huawei</option>
+                                <option value="ZTE">ZTE</option>
+                                <option value="Ericsson">Ericsson</option>
+                                <option value="Nokia">Nokia</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Total Sectors</label>
+                            <input type="number" id="totalSectors" name="totalSectors" min="1" max="6">
+                        </div>
+                    </div>
+                    <div id="sectorsContainer"></div>
+                </div>
+                
+                <!-- 11. RRU -->
+                <div class="section-card">
+                    <h3>11. RRU (Remote Radio Unit)</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Total RRUs</label>
+                            <input type="number" id="totalRrus" name="totalRrus" min="0">
+                        </div>
+                    </div>
+                    <div id="rrusContainer"></div>
+                </div>
+                
+                <!-- 12. RSU -->
+                <div class="section-card">
+                    <h3>12. RSU (Remote Switching Unit)</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>RSU Present</label>
+                            <select id="rsuPresent" name="rsuPresent" onchange="toggleRsuFields()">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="rsu-fields" style="display: none;">
+                            <div class="form-group">
+                                <label>RSU Vendor</label>
+                                <input type="text" id="rsuVendor" name="rsuVendor">
+                            </div>
+                            <div class="form-group">
+                                <label>Condition</label>
+                                <select id="rsuCondition" name="rsuCondition">
+                                    <option value="">Select</option>
+                                    <option value="Operational">Operational</option>
+                                    <option value="Faulty">Faulty</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Number of Ports</label>
+                                <input type="number" id="rsuPorts" name="rsuPorts">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 13. Maintenance -->
+                <div class="section-card">
+                    <h3>13. Maintenance</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Last Maintenance Date</label>
+                            <input type="date" id="lastMaintenance" name="lastMaintenance">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 14. Key and Contacts -->
+                <div class="section-card">
+                    <h3>14. Key Holder & Neighbors</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Key Holder Name</label>
+                            <input type="text" id="keyHolderName" name="keyHolderName">
+                        </div>
+                        <div class="form-group">
+                            <label>Key Holder Phone</label>
+                            <input type="tel" id="keyHolderPhone" name="keyHolderPhone">
+                        </div>
+                    </div>
+                    <div class="neighbors-container">
+                        <label>Neighbors (Name & Phone)</label>
+                        <div id="neighborsList"></div>
+                        <button type="button" class="btn-add" onclick="addNeighbor()">+ Add Neighbor</button>
+                    </div>
+                </div>
+                
+                <!-- 15. Other Companies -->
+                <div class="section-card">
+                    <h3>15. Other Companies (Co-location)</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Other Companies Present</label>
+                            <select id="otherCompaniesPresent" name="otherCompaniesPresent" onchange="toggleOtherCompaniesFields()">
+                                <option value="">Select</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="other-companies-fields" style="display: none;">
+                            <div class="form-group">
+                                <label>Company Name</label>
+                                <input type="text" id="otherCompanyName" name="otherCompanyName">
+                            </div>
+                            <div class="form-group">
+                                <label>Sharing Type</label>
+                                <select id="otherSharingType" name="otherSharingType">
+                                    <option value="">Select</option>
+                                    <option value="DC">DC Share</option>
+                                    <option value="AC">AC Share</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="submit-section">
+                    <button type="submit" class="btn-submit">💾 Save All Tower Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // MongoDB Connection String (provided by user)
+        const MONGODB_URI = 'mongodb+srv://hassanbhutta174_db_user:ZKCe9ktcgSDVYYOk@cluster0.95zq4qu.mongodb.net/?appName=Cluster0';
+        const DB_NAME = 'tower_management';
+        const COLLECTION_NAME = 'towers';
+        
+        // Mock data storage (will be replaced with actual MongoDB connection)
+        let towerDataStore = {};
+        
+        // Load sample data for demonstration
+        function loadSampleData() {
+            return {
+                "TWR-001": {
+                    towerId: "TWR-001",
+                    address: "123 Main Street, City Center",
+                    latitude: "24.8607",
+                    longitude: "67.0011",
+                    operator: "Telenor",
+                    technology: "4G",
+                    ownershipType: "Own",
+                    sharingPartner: "",
+                    sharingType: "",
+                    gridAvailability: "Yes",
+                    poleType: "Concrete",
+                    transformerCapacity: "100",
+                    transformerOwnership: "Own",
+                    dcLink: "Yes",
+                    meterPresent: "Yes",
+                    meterStatus: "Working",
+                    meterReference: "MTR-2024-001",
+                    earthRods: "4",
+                    generatorPresent: "Yes",
+                    generatorCondition: "Operational",
+                    generatorBrand: "Perkins",
+                    generatorPower: "50",
+                    oilCapacity: "20",
+                    lastOilChange: "2024-01-15",
+                    generatorBattery: "Yes",
+                    staticCharger: "Yes",
+                    soloNight: "Yes",
+                    oilSafety: "Yes",
+                    fuelSafety: "Yes",
+                    engineNumber: "ENG-12345",
+                    generatorSerial: "GEN-78901",
+                    noiseLevel: "Normal",
+                    rectifierModules: "3",
+                    acSpdPresent: "Yes",
+                    acSpdBrand: "ZTE",
+                    dcSpdPresent: "Yes",
+                    dcSpdBrand: "Huawei",
+                    coolingFan: "Yes",
+                    batteryConfig: "Bank",
+                    numberOfBanks: "2",
+                    bankCapacity: "400",
+                    llvdValue: "44.5",
+                    blvdValue: "43.2",
+                    batteryVoltage: "48.5",
+                    backupTime: "4.5",
+                    siteLoad: "50A",
+                    tankPresent: "Yes",
+                    tankType: "External",
+                    tankCapacity: "1000",
+                    solarPresent: "Yes",
+                    solarCapacity: "10.5",
+                    totalPanels: "24",
+                    operationalPanels: "22",
+                    faultyPanels: "2",
+                    junctionBoxes: "4",
+                    solarPuModules: "2",
+                    siteType: "Hub",
+                    parentSites: "TWR-002, TWR-003",
+                    childSites: "TWR-004, TWR-005",
+                    btsVendor: "Huawei",
+                    totalSectors: "3",
+                    sectors: [
+                        {number: 1, config: "4G"},
+                        {number: 2, config: "4G"},
+                        {number: 3, config: "2G"}
+                    ],
+                    totalRrus: "4",
+                    rrus: [
+                        {frequency: "900"},
+                        {frequency: "1800"},
+                        {frequency: "2100"},
+                        {frequency: "2100"}
+                    ],
+                    rsuPresent: "Yes",
+                    rsuVendor: "Huawei",
+                    rsuCondition: "Operational",
+                    rsuPorts: "8",
+                    lastMaintenance: "2024-02-10",
+                    keyHolderName: "Ahmed Khan",
+                    keyHolderPhone: "+92 300 1234567",
+                    neighbors: [
+                        {name: "Mohammad Ali", phone: "+92 321 7654321"},
+                        {name: "Sara Ahmed", phone: "+92 333 9876543"}
+                    ],
+                    otherCompaniesPresent: "Yes",
+                    otherCompanyName: "Jazz",
+                    otherSharingType: "DC"
+                }
+            };
+        }
+        
+        // Initialize sample data
+        towerDataStore = loadSampleData();
+        
+        function showMessage(elementId, message, type) {
+            const msgBox = document.getElementById(elementId);
+            msgBox.textContent = message;
+            msgBox.className = `message-box ${type}`;
+            msgBox.style.display = 'block';
+            setTimeout(() => {
+                msgBox.style.display = 'none';
+            }, 5000);
+        }
+        
+        function toggleSharingFields() {
+            const type = document.getElementById('ownershipType').value;
+            const partnerGroup = document.getElementById('sharingPartnerGroup');
+            const sharingTypeGroup = document.getElementById('sharingTypeGroup');
+            
+            if (type === 'Shared') {
+                partnerGroup.style.display = 'block';
+                sharingTypeGroup.style.display = 'block';
+            } else {
+                partnerGroup.style.display = 'none';
+                sharingTypeGroup.style.display = 'none';
+            }
+        }
+        
+        function toggleMeterFields() {
+            const present = document.getElementById('meterPresent').value;
+            const statusGroup = document.getElementById('meterStatusGroup');
+            const refGroup = document.getElementById('meterReferenceGroup');
+            
+            if (present === 'Yes') {
+                statusGroup.style.display = 'block';
+                refGroup.style.display = 'block';
+            } else {
+                statusGroup.style.display = 'none';
+                refGroup.style.display = 'none';
+            }
+        }
+        
+        function toggleGeneratorFields() {
+            const present = document.getElementById('generatorPresent').value;
+            const fields = document.querySelectorAll('.generator-fields');
+            
+            fields.forEach(field => {
+                field.style.display = present === 'Yes' ? 'block' : 'none';
+            });
+        }
+        
+        function toggleAcSpdBrand() {
+            const present = document.getElementById('acSpdPresent').value;
+            const brandGroup = document.getElementById('acSpdBrandGroup');
+            brandGroup.style.display = present === 'Yes' ? 'block' : 'none';
+        }
+        
+        function toggleDcSpdBrand() {
+            const present = document.getElementById('dcSpdPresent').value;
+            const brandGroup = document.getElementById('dcSpdBrandGroup');
+            brandGroup.style.display = present === 'Yes' ? 'block' : 'none';
+        }
+        
+        function toggleTankFields() {
+            const present = document.getElementById('tankPresent').value;
+            const fields = document.querySelectorAll('.tank-fields');
+            
+            fields.forEach(field => {
+                field.style.display = present === 'Yes' ? 'block' : 'none';
+            });
+        }
+        
+        function toggleSolarFields() {
+            const present = document.getElementById('solarPresent').value;
+            const fields = document.querySelectorAll('.solar-fields');
+            
+            fields.forEach(field => {
+                field.style.display = present === 'Yes' ? 'block' : 'none';
+            });
+        }
+        
+        function toggleSiteTypeFields() {
+            const type = document.getElementById('siteType').value;
+            const parentGroup = document.getElementById('parentSiteGroup');
+            const childGroup = document.getElementById('childSitesGroup');
+            
+            parentGroup.style.display = 'none';
+            childGroup.style.display = 'none';
+            
+            if (type === 'Single') {
+                parentGroup.style.display = 'block';
+            } else if (type === 'PTN') {
+                childGroup.style.display = 'block';
+            } else if (type === 'Hub' || type === 'Mega Hub') {
+                parentGroup.style.display = 'block';
+                childGroup.style.display = 'block';
+            }
+        }
+        
+        function toggleRsuFields() {
+            const present = document.getElementById('rsuPresent').value;
+            const fields = document.querySelectorAll('.rsu-fields');
+            
+            fields.forEach(field => {
+                field.style.display = present === 'Yes' ? 'block' : 'none';
+            });
+        }
+        
+        function toggleOtherCompaniesFields() {
+            const present = document.getElementById('otherCompaniesPresent').value;
+            const fields = document.querySelectorAll('.other-companies-fields');
+            
+            fields.forEach(field => {
+                field.style.display = present === 'Yes' ? 'block' : 'none';
+            });
+        }
+        
+        // Generate sector fields based on total sectors
+        document.getElementById('totalSectors').addEventListener('change', function() {
+            const container = document.getElementById('sectorsContainer');
+            const count = parseInt(this.value) || 0;
+            let html = '<h4>Sector Configurations</h4><div class="form-grid">';
+            
+            for (let i = 1; i <= count; i++) {
+                html += `
+                    <div class="form-group">
+                        <label>Sector ${i}</label>
+                        <select name="sector${i}Config" class="sector-config">
+                            <option value="">Select</option>
+                            <option value="2G">2G</option>
+                            <option value="3G">3G</option>
+                            <option value="4G">4G</option>
+                            <option value="5G">5G</option>
+                        </select>
+                    </div>
+                `;
+            }
+            html += '</div>';
+            container.innerHTML = html;
+        });
+        
+        // Generate RRU fields based on total RRUs
+        document.getElementById('totalRrus').addEventListener('change', function() {
+            const container = document.getElementById('rrusContainer');
+            const count = parseInt(this.value) || 0;
+            let html = '<h4>RRU Frequencies</h4><div class="form-grid">';
+            
+            for (let i = 1; i <= count; i++) {
+                html += `
+                    <div class="form-group">
+                        <label>RRU ${i} Frequency</label>
+                        <select name="rru${i}Frequency" class="rru-frequency">
+                            <option value="">Select</option>
+                            <option value="900">900 MHz (2G)</option>
+                            <option value="1800">1800 MHz (3G)</option>
+                            <option value="2100">2100 MHz (4G)</option>
+                            <option value="2300">2300 MHz (5G)</option>
+                            <option value="2600">2600 MHz (5G)</option>
+                        </select>
+                    </div>
+                `;
+            }
+            html += '</div>';
+            container.innerHTML = html;
+        });
+        
+        // Neighbors management
+        let neighborCount = 0;
+        
+        function addNeighbor() {
+            const container = document.getElementById('neighborsList');
+            const neighborDiv = document.createElement('div');
+            neighborDiv.className = 'neighbor-entry';
+            neighborDiv.innerHTML = `
+                <input type="text" name="neighborName[]" placeholder="Neighbor Name">
+                <input type="tel" name="neighborPhone[]" placeholder="Phone Number">
+                <button type="button" class="btn-remove" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(neighborDiv);
+        }
+        
+        // Load tower data function
+        async function loadTowerData() {
+            const towerId = document.getElementById('towerId').value.trim();
+            
+            if (!towerId) {
+                showMessage('searchMessage', 'Please enter a Tower ID', 'error');
+                return;
+            }
+            
+            try {
+                // In real implementation, this would fetch from MongoDB
+                // For now, using mock data
+                const data = towerDataStore[towerId];
+                
+                if (data) {
+                    // Fill all form fields with data
+                    fillFormData(data);
+                    
+                    document.getElementById('formTowerId').value = towerId;
+                    document.getElementById('basicTowerId').value = towerId;
+                    document.getElementById('dataSection').style.display = 'block';
+                    
+                    showMessage('searchMessage', 'Tower data loaded successfully!', 'success');
+                    
+                    // Scroll to data section
+                    document.getElementById('dataSection').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    // New tower - clear form but keep ID
+                    document.getElementById('towerForm').reset();
+                    document.getElementById('formTowerId').value = towerId;
+                    document.getElementById('basicTowerId').value = towerId;
+                    document.getElementById('dataSection').style.display = 'block';
+                    
+                    showMessage('searchMessage', 'New Tower ID. Please fill the data.', 'success');
+                }
+            } catch (error) {
+                showMessage('searchMessage', 'Error loading tower data', 'error');
+            }
+        }
+        
+        function fillFormData(data) {
+            // Basic Information
+            document.getElementById('address').value = data.address || '';
+            document.getElementById('latitude').value = data.latitude || '';
+            document.getElementById('longitude').value = data.longitude || '';
+            document.getElementById('technology').value = data.technology || '';
+            
+            // Ownership
+            document.getElementById('ownershipType').value = data.ownershipType || '';
+            toggleSharingFields();
+            document.getElementById('sharingPartner').value = data.sharingPartner || '';
+            document.getElementById('sharingType').value = data.sharingType || '';
+            
+            // Electrical
+            document.getElementById('gridAvailability').value = data.gridAvailability || '';
+            document.getElementById('poleType').value = data.poleType || '';
+            document.getElementById('transformerCapacity').value = data.transformerCapacity || '';
+            document.getElementById('transformerOwnership').value = data.transformerOwnership || '';
+            document.getElementById('dcLink').value = data.dcLink || '';
+            document.getElementById('meterPresent').value = data.meterPresent || '';
+            toggleMeterFields();
+            document.getElementById('meterStatus').value = data.meterStatus || '';
+            document.getElementById('meterReference').value = data.meterReference || '';
+            document.getElementById('earthRods').value = data.earthRods || '';
+            
+            // Generator
+            document.getElementById('generatorPresent').value = data.generatorPresent || '';
+            toggleGeneratorFields();
+            document.getElementById('generatorCondition').value = data.generatorCondition || '';
+            document.getElementById('generatorBrand').value = data.generatorBrand || '';
+            document.getElementById('generatorPower').value = data.generatorPower || '';
+            document.getElementById('oilCapacity').value = data.oilCapacity || '';
+            document.getElementById('lastOilChange').value = data.lastOilChange || '';
+            document.getElementById('generatorBattery').value = data.generatorBattery || '';
+            document.getElementById('staticCharger').value = data.staticCharger || '';
+            document.getElementById('soloNight').value = data.soloNight || '';
+            document.getElementById('oilSafety').value = data.oilSafety || '';
+            document.getElementById('fuelSafety').value = data.fuelSafety || '';
+            document.getElementById('engineNumber').value = data.engineNumber || '';
+            document.getElementById('generatorSerial').value = data.generatorSerial || '';
+            document.getElementById('noiseLevel').value = data.noiseLevel || '';
+            
+            // Rectifier
+            document.getElementById('rectifierModules').value = data.rectifierModules || '';
+            document.getElementById('acSpdPresent').value = data.acSpdPresent || '';
+            toggleAcSpdBrand();
+            document.getElementById('acSpdBrand').value = data.acSpdBrand || '';
+            document.getElementById('dcSpdPresent').value = data.dcSpdPresent || '';
+            toggleDcSpdBrand();
+            document.getElementById('dcSpdBrand').value = data.dcSpdBrand || '';
+            document.getElementById('coolingFan').value = data.coolingFan || '';
+            
+            // Battery Bank
+            document.getElementById('batteryConfig').value = data.batteryConfig || '';
+            document.getElementById('numberOfBanks').value = data.numberOfBanks || '';
+            document.getElementById('bankCapacity').value = data.bankCapacity || '';
+            document.getElementById('llvdValue').value = data.llvdValue || '';
+            document.getElementById('blvdValue').value = data.blvdValue || '';
+            document.getElementById('batteryVoltage').value = data.batteryVoltage || '';
+            document.getElementById('backupTime').value = data.backupTime || '';
+            document.getElementById('siteLoad').value = data.siteLoad || '';
+            
+            // Diesel Tank
+            document.getElementById('tankPresent').value = data.tankPresent || '';
+            toggleTankFields();
+            document.getElementById('tankType').value = data.tankType || '';
+            document.getElementById('tankCapacity').value = data.tankCapacity || '';
+            
+            // Solar
+            document.getElementById('solarPresent').value = data.solarPresent || '';
+            toggleSolarFields();
+            document.getElementById('solarCapacity').value = data.solarCapacity || '';
+            document.getElementById('totalPanels').value = data.totalPanels || '';
+            document.getElementById('operationalPanels').value = data.operationalPanels || '';
+            document.getElementById('faultyPanels').value = data.faultyPanels || '';
+            document.getElementById('junctionBoxes').value = data.junctionBoxes || '';
+            document.getElementById('solarPuModules').value = data.solarPuModules || '';
+            
+            // Site Classification
+            document.getElementById('siteType').value = data.siteType || '';
+            toggleSiteTypeFields();
+            document.getElementById('parentSites').value = data.parentSites || '';
+            document.getElementById('childSites').value = data.childSites || '';
+            
+            // BTS
+            document.getElementById('btsVendor').value = data.btsVendor || '';
+            document.getElementById('totalSectors').value = data.totalSectors || '';
+            if (data.sectors) {
+                const event = new Event('change');
+                document.getElementById('totalSectors').dispatchEvent(event);
+                setTimeout(() => {
+                    data.sectors.forEach((sector, index) => {
+                        const select = document.querySelector(`select[name="sector${index + 1}Config"]`);
+                        if (select) select.value = sector.config;
+                    });
+                }, 100);
+            }
+            
+            // RRU
+            document.getElementById('totalRrus').value = data.totalRrus || '';
+            if (data.rrus) {
+                const event = new Event('change');
+                document.getElementById('totalRrus').dispatchEvent(event);
+                setTimeout(() => {
+                    data.rrus.forEach((rru, index) => {
+                        const select = document.querySelector(`select[name="rru${index + 1}Frequency"]`);
+                        if (select) select.value = rru.frequency;
+                    });
+                }, 100);
+            }
+            
+            // RSU
+            document.getElementById('rsuPresent').value = data.rsuPresent || '';
+            toggleRsuFields();
+            document.getElementById('rsuVendor').value = data.rsuVendor || '';
+            document.getElementById('rsuCondition').value = data.rsuCondition || '';
+            document.getElementById('rsuPorts').value = data.rsuPorts || '';
+            
+            // Maintenance
+            document.getElementById('lastMaintenance').value = data.lastMaintenance || '';
+            
+            // Key & Contacts
+            document.getElementById('keyHolderName').value = data.keyHolderName || '';
+            document.getElementById('keyHolderPhone').value = data.keyHolderPhone || '';
+            
+            // Neighbors
+            document.getElementById('neighborsList').innerHTML = '';
+            if (data.neighbors && data.neighbors.length) {
+                data.neighbors.forEach(neighbor => {
+                    addNeighbor();
+                    const entries = document.querySelectorAll('.neighbor-entry');
+                    const lastEntry = entries[entries.length - 1];
+                    lastEntry.querySelector('input[name="neighborName[]"]').value = neighbor.name;
+                    lastEntry.querySelector('input[name="neighborPhone[]"]').value = neighbor.phone;
+                });
+            }
+            
+            // Other Companies
+            document.getElementById('otherCompaniesPresent').value = data.otherCompaniesPresent || '';
+            toggleOtherCompaniesFields();
+            document.getElementById('otherCompanyName').value = data.otherCompanyName || '';
+            document.getElementById('otherSharingType').value = data.otherSharingType || '';
+        }
+        
+        // Form submission
+        document.getElementById('towerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const towerId = document.getElementById('formTowerId').value;
+            
+            // Collect all form data
+            const formData = new FormData(this);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (value) data[key] = value;
+            }
+            
+            // Collect sectors
+            const sectors = [];
+            const sectorSelects = document.querySelectorAll('.sector-config');
+            sectorSelects.forEach((select, index) => {
+                if (select.value) {
+                    sectors.push({number: index + 1, config: select.value});
+                }
+            });
+            if (sectors.length) data.sectors = sectors;
+            
+            // Collect RRUs
+            const rrus = [];
+            const rruSelects = document.querySelectorAll('.rru-frequency');
+            rruSelects.forEach(select => {
+                if (select.value) {
+                    rrus.push({frequency: select.value});
+                }
+            });
+            if (rrus.length) data.rrus = rrus;
+            
+            // Collect neighbors
+            const neighbors = [];
+            const neighborNames = document.querySelectorAll('input[name="neighborName[]"]');
+            const neighborPhones = document.querySelectorAll('input[name="neighborPhone[]"]');
+            
+            for (let i = 0; i < neighborNames.length; i++) {
+                if (neighborNames[i].value && neighborPhones[i].value) {
+                    neighbors.push({
+                        name: neighborNames[i].value,
+                        phone: neighborPhones[i].value
+                    });
+                }
+            }
+            if (neighbors.length) data.neighbors = neighbors;
+            
+            try {
+                // In real implementation, this would save to MongoDB
+                // For now, save to mock store
+                towerDataStore[towerId] = data;
+                
+                showMessage('searchMessage', 'Tower data saved successfully to MongoDB!', 'success');
+                
+                // Show summary
+                alert(`Data saved for Tower ${towerId}\nTotal fields saved: ${Object.keys(data).length}`);
+                
+            } catch (error) {
+                showMessage('searchMessage', 'Error saving data to MongoDB', 'error');
+            }
+        });
+        
+        // Initialize with sample data
+        window.onload = function() {
+            // Add initial neighbor field
+            addNeighbor();
+        };
+    </script>
+</body>
+</html>
