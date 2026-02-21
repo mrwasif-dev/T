@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrical Infrastructure</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>⚡ Electrical Infrastructure</h2>
+    
+    <div class="form-grid">
+        <div class="form-group">
+            <label>Grid Availability</label>
+            <select id="gridAvailability" onchange="toggleMeter()">
+                <option value="">-- Select --</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Pole Type</label>
+            <select id="poleType" onchange="updateData()">
+                <option value="">-- Select --</option>
+                <option value="Concrete">Concrete</option>
+                <option value="Steel">Steel</option>
+                <option value="Wood">Wood</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Transformer Capacity (kW)</label>
+            <input type="number" id="transformerCapacity" placeholder="Enter capacity" onchange="updateData()">
+        </div>
+
+        <div class="form-group">
+            <label>Transformer Ownership</label>
+            <select id="transformerOwnership" onchange="updateData()">
+                <option value="">-- Select --</option>
+                <option value="Own">Own</option>
+                <option value="Public">Public</option>
+                <option value="Shared">Shared</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>3-Phase DC Link</label>
+            <select id="dcLink" onchange="updateData()">
+                <option value="">-- Select --</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="meterGroup" style="display: none;">
+            <label>Energy Meter Present</label>
+            <select id="meterPresent" onchange="toggleMeterDetails()">
+                <option value="">-- Select --</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="meterStatusGroup" style="display: none;">
+            <label>Meter Status</label>
+            <select id="meterStatus" onchange="updateData()">
+                <option value="">-- Select --</option>
+                <option value="Working">Working</option>
+                <option value="Faulty">Faulty</option>
+                <option value="No Display">No Display</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="meterReferenceGroup" style="display: none;">
+            <label>Meter Reference Number</label>
+            <input type="text" id="meterReference" placeholder="Enter meter number" onchange="updateData()">
+        </div>
+
+        <div class="form-group">
+            <label>Number of Earth Rods</label>
+            <input type="number" id="earthRods" placeholder="Enter quantity" min="0" onchange="updateData()">
+        </div>
+
+        <div class="form-group">
+            <label>Voltage (V)</label>
+            <input type="text" id="voltage" placeholder="e.g., 220/380" onchange="updateData()">
+        </div>
+
+        <div class="form-group">
+            <label>Phase Type</label>
+            <select id="phaseType" onchange="updateData()">
+                <option value="">-- Select --</option>
+                <option value="Single">Single Phase</option>
+                <option value="Three">Three Phase</option>
+            </select>
+        </div>
+    </div>
+
+    <script>
+        let sectionData = {};
+
+        function toggleMeter() {
+            const gridAvail = document.getElementById('gridAvailability').value;
+            document.getElementById('meterGroup').style.display = gridAvail === 'Yes' ? 'block' : 'none';
+            updateData();
+        }
+
+        function toggleMeterDetails() {
+            const meterPresent = document.getElementById('meterPresent').value;
+            document.getElementById('meterStatusGroup').style.display = meterPresent === 'Yes' ? 'block' : 'none';
+            document.getElementById('meterReferenceGroup').style.display = meterPresent === 'Yes' ? 'block' : 'none';
+            updateData();
+        }
+
+        function updateData() {
+            sectionData = {
+                gridAvailability: document.getElementById('gridAvailability').value,
+                poleType: document.getElementById('poleType').value,
+                transformerCapacity: document.getElementById('transformerCapacity').value,
+                transformerOwnership: document.getElementById('transformerOwnership').value,
+                dcLink: document.getElementById('dcLink').value,
+                meterPresent: document.getElementById('meterPresent').value,
+                meterStatus: document.getElementById('meterStatus').value,
+                meterReference: document.getElementById('meterReference').value,
+                earthRods: document.getElementById('earthRods').value,
+                voltage: document.getElementById('voltage').value,
+                phaseType: document.getElementById('phaseType').value
+            };
+        }
+
+        function getSectionData() {
+            updateData();
+            return sectionData;
+        }
+    </script>
+</body>
+</html>
