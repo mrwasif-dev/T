@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROFESSOR AHAD X MT HACKER TOOLKIT</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:black;
+  color:white;
+  overflow-x:hidden;
+}
+
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
+
+/* LOGIN */
+#loginBox{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(0,0,0,0.8);
+  padding:30px;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 0 20px red;
+  z-index:2;
+}
+
+#loginBox input{
+  display:block;
+  margin:10px auto;
+  padding:10px;
+  width:200px;
+  border:none;
+  border-radius:5px;
+}
+
+#loginBox button{
+  padding:10px 20px;
+  border:none;
+  background:red;
+  color:white;
+  cursor:pointer;
+  border-radius:5px;
+  margin-top:5px;
+}
+
+/* TOOLKIT */
+#toolkit{
+  display:none;
+  padding:20px;
+  z-index:1;
+}
+
+h1{
+  text-align:center;
+  color:white;
+  font-size:24px;
+  text-shadow:0 0 8px red, 0 0 15px red;
+  margin-bottom:20px;
+}
+
+h1 span{
+  display:block;
+  font-size:30px;
+  font-weight:bold;
+}
+
+.tools-container{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap:15px;
+  max-width:1000px;
+  margin:0 auto;
+  max-height:80vh;
+  overflow-y:auto;
+  padding-bottom:20px;
+}
+
+.tool-card{
+  background:rgba(255,0,0,0.1);
+  padding:8px;
+  border-radius:10px;
+  text-align:center;
+  transition:0.3s;
+  box-shadow:0 0 8px rgba(255,0,0,0.4);
+}
+
+.tool-card:hover{
+  transform:scale(1.04);
+  box-shadow:0 0 18px red;
+}
+
+.tool-card img{
+  width:100%;
+  height:90px;
+  object-fit:cover;
+  border-radius:6px;
+}
+
+.tool-card p{
+  margin-top:5px;
+  font-size:11px;
+}
+
+/* PURCHASE TEXT */
+#purchaseText{
+  display:none;
+  text-align:left;
+  padding:20px;
+  font-size:16px;
+  color:white;
+  max-width:700px;
+  margin:50px auto;
+  background:rgba(255,0,0,0.1);
+  border-radius:10px;
+  box-shadow:0 0 15px red;
+  position:relative;
+}
+
+/* CONTACT SECTION */
+.contact-section{
+  display:none;
+  margin-top:50px;
+  text-align:center;
+  padding:20px;
+  max-width:900px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.contact-section h2{
+  color:red;
+  margin-bottom:30px;
+}
+
+.contact-container{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  flex-wrap:wrap;
+}
+
+.contact-card{
+  background:rgba(255,0,0,0.1);
+  padding:20px;
+  border-radius:15px;
+  box-shadow:0 0 15px red;
+  width:220px;
+  transition:0.3s;
+}
+
+.contact-card:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px red;
+}
+
+.contact-card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  border-radius:10px;
+}
+
+.contact-card button{
+  padding:8px 20px;
+  border:none;
+  background:red;
+  color:white;
+  border-radius:5px;
+  cursor:pointer;
+  margin-top:5px;
+}
+
+.backBtn{
+  margin-top:15px;
+  padding:8px 20px;
+  background:red;
+  color:white;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* Glow for toolkit name */
+#toolkitName{
+  color:white;
+  text-align:center;
+  font-size:22px;
+  text-shadow:0 0 10px red,0 0 20px red;
+  margin-bottom:15px;
+}
+#toolkitSub{
+  text-align:center;
+  color:white;
+  font-size:26px;
+  text-shadow:0 0 10px red,0 0 20px red;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<!-- LOGIN -->
+<div id="loginBox">
+  <h2>Login</h2>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <button onclick="showPurchase()">PURCHASE LOGIN</button>
+  <button onclick="showOwner()">OWNER DETAILS</button>
+</div>
+
+<!-- PURCHASE TEXT -->
+<div id="purchaseText">
+  <p>
+    _ASLAM O ALAIKUM 💓_<br>
+    🔥 Exclusive Ramadan Offer Alert! 🔥<br>
+    Get ready to elevate your game with our all-in-one premium Toolkit! 🚀<br>
+    Packed with essential tools and features, this kit is a must-have for anyone looking to boost productivity and efficiency.<br>
+    👨‍💻 Originally priced at 1000RS, we're offering it at a special Ramadan price of
+    <span style="color:yellow; font-weight:bold; font-size:18px;">500RS</span>!<br>
+    📈 Whether you're a student, professional, or entrepreneur, this toolkit has got you covered!<br>
+    👉 Contact us now to purchase and take the first step towards success! 📲<br>
+    Hurry, limited time offer! 💪
+  </p>
+  <button class="backBtn" onclick="goBack()">BACK</button>
+</div>
+
+<!-- CONTACT SECTION -->
+<div id="contactSection" class="contact-section">
+<h2>CONTACT US</h2>
+<div class="contact-container">
+
+  <!-- PROFESSOR AHAD -->
+  <div class="contact-card">
+    <img src="https://i.postimg.cc/ZYp23vHt/IMG-20260215-WA0110(1).jpg">
+    <h3>Professor Ahad 😎</h3>
+    <p>
+      Coding Master | AI & Web Dev Expert | Mentor<br>
+      Teaching code, inspiring minds 💻<br>
+      Turning ideas into digital reality 🚀
+    </p>
+    <button onclick="window.open('https://wa.me/923317102207')">OPEN WHATSAPP CHAT</button>
+    <button onclick="window.open('https://whatsapp.com/channel/0029VbCGCKPIyPtYfbtZTi2X')">OPEN WHATSAPP CHANNEL</button>
+  </div>
+
+  <!-- MT HACKER -->
+  <div class="contact-card">
+    <img src="https://i.postimg.cc/nzZRG00F/IMG-20260215-WA0082.jpg">
+    <h3>MT Hacker 🕵️</h3>
+    <p>
+      Ethical Hacker | Cybersecurity Expert | Penetration Tester<br>
+      Protecting digital spaces, one hack at a time 🔒<br>
+      Securing the web, safeguarding data 💻
+    </p>
+    <button onclick="window.open('https://wa.me/923096002063')">OPEN WHATSAPP CHAT</button>
+    <button onclick="window.open('https://whatsapp.com/channel/0029Vb6KZxGI1rck48de930G')">OPEN WHATSAPP CHANNEL</button>
+  </div>
+
+</div>
+
+<button class="backBtn" onclick="goBack()">BACK</button>
+</div>
+
+<!-- TOOLKIT -->
+<div id="toolkit">
+<div id="toolkitName">PROFESSOR AHAD X MT HACKER</div>
+<div id="toolkitSub">TOOLKIT</div>
+
+<div class="tools-container">
+
+<!-- 26 OLD TOOLS -->
+<div class="tool-card"><img src="https://i.postimg.cc/65Qm244C/Picsart-26-02-15-19-27-29-113.jpg"><p>WHATSAPP CHANNEL BAN</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/CMvsBPgR/379389-28375833.jpg"><p>FACEBOOK BAN</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/zBhM0sFm/images.jpg"><p>LIVE SCREEN HACK</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/fTh1LmVc/images-(2).jpg"><p>INSTAGRAM BAN</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/wvX7dDt0/ad3e98abe9de44760d7dfe5f65cd833bd059c163c3cdbe5a8703c2e35a5bb02f-200.jpg"><p>PUBG ID HACK</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/9FZVgc9V/Screenshot-20260216-005804.jpg"><p>WI FI HACK</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/L4qZXgcy/Screenshot-20260216-011412.jpg"><p>WHATSAPP FAKE NUMBER</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/1tr5dP2x/Screenshot-20260216-004901.jpg"><p>FACEBOOK BLUE TICK</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/7YmXk20z/Screenshot-20260216-010324.jpg"><p>MOBILE RAT HACK</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/FsW1mrRs/images-(1).jpg"><p>FREE FIRE ID HACK</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/NF1K59xb/images-(3).jpg"><p>92 JEETO HACK</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/CLhhjQML/webcam-hacking-laptop-spying.jpg"><p>CAMERA HACK</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/PqgfYfJ8/images-(4).jpg"><p>AVIATOR HACK</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/RVpBwCb1/images-(6).jpg"><p>SMS HACK</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/fL7sdx6R/images-(5).jpg"><p>PHONE VIRUS</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/7L0rv3Pc/images.png"><p>GMAIL HACK</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/cHcqCdnr/106970951-mediaitem106970947-jpg.webp"><p>WHATSAPP HACK</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/RZJjf7tm/images-(7).jpg"><p>GALLERY HACK</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/vBx2wTqc/images.png"><p>UNLIMITED GMAIL METHOD</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/CL7Ntbh2/Screenshot-20260216-215649.jpg"><p>TIKTOK FREE SERVICES</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/SQ772cMp/IMG-20260202-WA0029.jpg"><p>UNLIMITED FREE CALL</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/Y099ScF4/IMG-20260216-WA0061.jpg"><p>FREE FIRE PANEL</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/W3tLFs9M/images-(9).jpg"><p>GTA SAN ANDREAS</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/c4hpmKVd/images-(1).png"><p>GTA VICE CITY</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/wMVG0P4G/images-(10).jpg"><p>8 BALL POOL HACK</p></div>
+
+<!-- 6 NEW TOOLS -->
+<div class="tool-card"><img src="https://i.postimg.cc/rshKPjrJ/IMG-20260218-WA0008.jpg"><p>UNLIMITED UC AWARENESS</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/RZhbyZjY/IMG-20260218-WA0006.jpg"><p>WHATSAPP BAN GUIDE</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/c44DtJ41/IMG-20260218-WA0010.jpg"><p>CAPCUT PRO INFO</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/htQ1Vzk6/IMG-20260218-WA0005.jpg"><p>PASSWORD CRACKING PREVENTION</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/bJp0X6sV/IMG-20260218-WA0003.jpg"><p>SOCIAL MEDIA SECURITY</p></div>
+<div class="tool-card"><img src="https://i.postimg.cc/2jHQJ7m2/IMG-20260218-WA0011.jpg"><p>FREE FIRE PROXY ALERT</p></div>
+
+</div>
+
+<button class="backBtn" onclick="goBack()">BACK</button>
+</div>
+
+<script>
+function login(){
+  var user=document.getElementById("username").value;
+  var pass=document.getElementById("password").value;
+
+  if(user==="admin" && pass==="1234"){
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("toolkit").style.display="block";
+    document.getElementById("purchaseText").style.display="none";
+    document.getElementById("contactSection").style.display="none";
+  }else{
+    alert("Wrong Username or Password");
+  }
+}
+
+function showPurchase(){
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("toolkit").style.display="none";
+  document.getElementById("purchaseText").style.display="block";
+  document.getElementById("contactSection").style.display="none";
+}
+
+function showOwner(){
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("toolkit").style.display="none";
+  document.getElementById("purchaseText").style.display="none";
+  document.getElementById("contactSection").style.display="block";
+}
+
+function goBack(){
+  document.getElementById("loginBox").style.display="block";
+  document.getElementById("toolkit").style.display="none";
+  document.getElementById("purchaseText").style.display="none";
+  document.getElementById("contactSection").style.display="none";
+}
+
+/* Matrix */
+var canvas=document.getElementById("matrix");
+var ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+var letters="01";
+var fontSize=14;
+var columns=canvas.width/fontSize;
+var drops=[];
+for(var i=0;i<columns;i++){drops[i]=1;}
+
+function draw(){
+  ctx.fillStyle="rgba(0,0,0,0.05)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="red";
+  ctx.font=fontSize+"px monospace";
+
+  for(var i=0;i<drops.length;i++){
+    var text=letters[Math.floor(Math.random()*letters.length)];
+    ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+    if(drops[i]*fontSize>canvas.height && Math.random()>0.975) drops[i]=0;
+    drops[i]++;
+  }
+}
+
+setInterval(draw,33);
+window.addEventListener("resize",function(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+});
+</script>
+
+</body>
+</html>
